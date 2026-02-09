@@ -116,27 +116,5 @@ resource "aws_security_group" "demo_sg" {
   }
 }
 
-# EC2 Instance
-resource "aws_instance" "demo_instance" {
-  ami                    = "ami-03f65b8614a860c29" // Replace with a valid AMI ID for your region
-  instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.demo_subnet.id
-  key_name               = aws_key_pair.demo_keypair.key_name
-  vpc_security_group_ids = [aws_security_group.demo_sg.id]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    apt-get update
-    apt-get install -y python3 python3-pip python3-venv
-  EOF
 
-  tags = {
-    Name = "demo-instance"
-  }
-}
-
-# Outputs
-output "instance_public_ip" {
-  description = "Public IP of the EC2 instance"
-  value       = aws_instance.demo_instance.public_ip
-}
